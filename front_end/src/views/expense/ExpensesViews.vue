@@ -9,11 +9,8 @@
         <p class="text-sm text-muted-foreground"></p>
       </div>
       <div class="flex items-center gap-2">
-        <Button
-          @click="togglePanel()"
-          variant="ghost"
-          class="text-sm text-muted-foreground flex gap-1 items-center justify-center cursor-pointer"
-        >
+        <Button @click="togglePanel()" variant="ghost"
+          class="text-sm text-muted-foreground flex gap-1 items-center justify-center cursor-pointer">
           <CirclePlus />
           Create New
         </Button>
@@ -21,80 +18,43 @@
     </div>
 
     <div class="rounded-lg overflow-hidden">
-      <Table
-        :columns="columns"
-        :data="expenses"
-        :isPagination="true"
-        :isSearchable="true"
-        :is-filter-select="true"
-        filter-select-column="expense_type"
-        filter-select-label="Type"
-        :filter-select-options="[
+      <Table :columns="columns" :data="expenses" :isPagination="true" :isSearchable="true" :is-filter-select="true"
+        filter-select-column="expense_type" filter-select-label="Type" :filter-select-options="[
           { label: 'All', value: '__all' },
           { label: 'Employee', value: 'employee' },
           { label: 'Vehicle', value: 'vehicle' },
           { label: 'General', value: 'general' },
-        ]"
-      />
+        ]" />
     </div>
-    <ConfirmDelete
-      v-model:open="showDeleteDialog"
-      :title="deleteTitle"
-      description="Are you sure you want to delete this bank? This action cannot be undone."
-      confirm-label="Delete Bank"
-      @confirm="handleDelete"
-    />
-    <Panel
-      v-model="showPanel"
-      title="Create A Expense"
-      description="Fill the Expense Information"
-    >
-      <form
-        @submit.prevent="handleSubmit"
-        enctype="multipart/form-data"
-        class="space-y-6"
-      >
+    <ConfirmDelete v-model:open="showDeleteDialog" :title="deleteTitle"
+      description="Are you sure you want to delete this bank? This action cannot be undone." confirm-label="Delete Bank"
+      @confirm="handleDelete" />
+    <Panel v-model="showPanel" title="Create A Expense" description="Fill the Expense Information">
+      <form @submit.prevent="handleSubmit" enctype="multipart/form-data" class="space-y-6">
         <div class="space-y-6 max-w-3xl mx-auto">
           <!-- Main Category Selector -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2"
-              >Expense Category</label
-            >
+            <label class="block text-sm font-medium text-gray-700 mb-2">Expense Category</label>
             <div class="grid grid-cols-3 gap-3">
-              <label
-                v-for="option in categoryOptions"
-                :key="option.value"
-                :class="{
-                  'border-blue-500 bg-blue-50 shadow-inner':
-                    form.expense_category === option.value,
-                  'border-gray-200': form.expense_category !== option.value,
-                }"
-                class="cursor-pointer rounded-lg border p-4 transition-all duration-200 hover:border-blue-400 hover:shadow-sm"
-              >
-                <input
-                  type="radio"
-                  v-model="form.expense_category"
-                  :value="option.value"
-                  class="hidden"
-                  @change="resetSubCategories"
-                />
+              <label v-for="option in categoryOptions" :key="option.value" :class="{
+                'border-blue-500 bg-blue-50 shadow-inner':
+                  form.expense_category === option.value,
+                'border-gray-200': form.expense_category !== option.value,
+              }"
+                class="cursor-pointer rounded-lg border p-4 transition-all duration-200 hover:border-blue-400 hover:shadow-sm">
+                <input type="radio" v-model="form.expense_category" :value="option.value" class="hidden"
+                  @change="resetSubCategories" />
                 <div class="flex flex-col items-center gap-2">
-                  <span
-                    :class="{
-                      'text-blue-600': form.expense_category === option.value,
-                      'text-gray-600': form.expense_category !== option.value,
-                    }"
-                    class="text-2xl"
-                  >
+                  <span :class="{
+                    'text-blue-600': form.expense_category === option.value,
+                    'text-gray-600': form.expense_category !== option.value,
+                  }" class="text-2xl">
                     <component :is="option.iconComponent" />
                   </span>
-                  <span
-                    :class="{
-                      'text-blue-700': form.expense_category === option.value,
-                      'text-gray-700': form.expense_category !== option.value,
-                    }"
-                    class="text-sm font-medium"
-                  >
+                  <span :class="{
+                    'text-blue-700': form.expense_category === option.value,
+                    'text-gray-700': form.expense_category !== option.value,
+                  }" class="text-sm font-medium">
                     {{ option.label }}
                   </span>
                 </div>
@@ -103,24 +63,14 @@
           </div>
 
           <!-- Dynamic Subcategory Sections with Animation -->
-          <transition
-            enter-active-class="transition-all duration-300 ease-out"
-            enter-from-class="opacity-0 scale-95 translate-y-1"
-            enter-to-class="opacity-100 scale-100 translate-y-0"
-            leave-active-class="transition-all duration-200 ease-in"
-            leave-from-class="opacity-100 scale-100"
-            leave-to-class="opacity-0 scale-95"
-            mode="out-in"
-          >
+          <transition enter-active-class="transition-all duration-300 ease-out"
+            enter-from-class="opacity-0 scale-95 translate-y-1" enter-to-class="opacity-100 scale-100 translate-y-0"
+            leave-active-class="transition-all duration-200 ease-in" leave-from-class="opacity-100 scale-100"
+            leave-to-class="opacity-0 scale-95" mode="out-in">
             <!-- General Expenses -->
-            <div
-              v-if="form.expense_category === 'General'"
-              key="general"
-              class="p-4 rounded-xl bg-gray-50 border border-gray-100"
-            >
-              <label class="block text-sm font-medium text-gray-700 mb-2"
-                >General Expense Type</label
-              >
+            <div v-if="form.expense_category === 'General'" key="general"
+              class="p-4 rounded-xl bg-gray-50 border border-gray-100">
+              <label class="block text-sm font-medium text-gray-700 mb-2">General Expense Type</label>
               <div class="relative">
                 <Select v-model="form.General_category">
                   <SelectTrigger class="w-full">
@@ -128,36 +78,25 @@
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem
-                        v-for="cat in CategoryGeneral"
-                        :key="cat.id"
-                        :value="cat.id"
-                      >
+                      <SelectItem v-for="cat in CategoryGeneral" :key="cat.id" :value="cat.id">
                         {{ cat.name }}
                       </SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
 
-                <div
-                  class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
-                >
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
                   <ChevronDown class="h-4 w-4" />
                 </div>
               </div>
             </div>
 
             <!-- Vehicle Expenses -->
-            <div
-              v-else-if="form.expense_category === 'Vehicle'"
-              key="vehicle"
-              class="p-4 rounded-xl bg-gray-50 border border-gray-100"
-            >
+            <div v-else-if="form.expense_category === 'Vehicle'" key="vehicle"
+              class="p-4 rounded-xl bg-gray-50 border border-gray-100">
               <div class="grid grid-cols-1 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2"
-                    >Select Vehicle</label
-                  >
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Select Vehicle</label>
 
                   <div class="relative">
                     <Select v-model="form.vehicle_id">
@@ -166,51 +105,35 @@
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectItem
-                            v-for="cat in AllVehicles"
-                            :key="cat.id"
-                            :value="cat.id"
-                          >
+                          <SelectItem v-for="cat in AllVehicles" :key="cat.id" :value="cat.id">
                             {{ cat.plate_number }}
                           </SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
 
-                    <div
-                      class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
-                    >
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
                       <ChevronDown class="h-4 w-4" />
                     </div>
                   </div>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2"
-                    >Vehicle Expense Type</label
-                  >
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Vehicle Expense Type</label>
                   <div class="relative">
                     <Select v-model="form.vehicle_category">
                       <SelectTrigger class="w-full">
-                        <SelectValue
-                          placeholder="Choose Vehicle Expense Type"
-                        />
+                        <SelectValue placeholder="Choose Vehicle Expense Type" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectItem
-                            v-for="cat in CategoryVehicle"
-                            :key="cat.id"
-                            :value="cat.id"
-                          >
+                          <SelectItem v-for="cat in CategoryVehicle" :key="cat.id" :value="cat.id">
                             {{ cat.name }}
                           </SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
 
-                    <div
-                      class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
-                    >
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
                       <ChevronDown class="h-4 w-4" />
                     </div>
                   </div>
@@ -219,11 +142,8 @@
             </div>
 
             <!-- Employee Expenses -->
-            <div
-              v-else-if="form.expense_category === 'Employee'"
-              key="employee"
-              class="p-4 rounded-xl bg-gray-50 border border-gray-100"
-            >
+            <div v-else-if="form.expense_category === 'Employee'" key="employee"
+              class="p-4 rounded-xl bg-gray-50 border border-gray-100">
               <div class="grid grid-cols-1 gap-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">
@@ -236,11 +156,7 @@
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectItem
-                            v-for="cat in AllEmployees"
-                            :key="cat.id"
-                            :value="cat.id"
-                          >
+                          <SelectItem v-for="cat in AllEmployees" :key="cat.id" :value="cat.id">
                             {{ cat.first_name }}
                             {{ cat.last_name }}
                           </SelectItem>
@@ -248,18 +164,14 @@
                       </SelectContent>
                     </Select>
 
-                    <div
-                      class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
-                    >
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
                       <ChevronDown class="h-4 w-4" />
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2"
-                    >Employee Expense Type</label
-                  >
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Employee Expense Type</label>
                   <div class="relative">
                     <Select v-model="form.employees_category">
                       <SelectTrigger class="w-full">
@@ -267,20 +179,14 @@
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectItem
-                            v-for="cat in CategoryEmployee"
-                            :key="cat.id"
-                            :value="cat.id"
-                          >
+                          <SelectItem v-for="cat in CategoryEmployee" :key="cat.id" :value="cat.id">
                             {{ cat.name }}
                           </SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
 
-                    <div
-                      class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
-                    >
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
                       <ChevronDown class="h-4 w-4" />
                     </div>
                   </div>
@@ -292,31 +198,19 @@
 
         <div class="space-y-6 max-w-3xl mx-auto">
           <!-- Bank Selection Section -->
-          <div
-            class="p-4 rounded-xl bg-gray-50 border border-gray-100 space-y-4"
-          >
+          <div class="p-4 rounded-xl bg-gray-50 border border-gray-100 space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2"
-                >From Bank
+              <label class="block text-sm font-medium text-gray-700 mb-2">From Bank
               </label>
               <div class="relative">
-                <select
-                  v-model="form.selectedBank"
-                  @change="filterBankAccounts"
-                  class="w-full appearance-none rounded-lg border border-gray-300 px-4 py-3 pr-10 text-gray-900 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                >
+                <select v-model="form.selectedBank" @change="filterBankAccounts"
+                  class="w-full appearance-none rounded-lg border border-gray-300 px-4 py-3 pr-10 text-gray-900 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
                   <option value="">Select bank</option>
-                  <option
-                    v-for="bank in AllBanks"
-                    :key="bank.id"
-                    :value="bank.id"
-                  >
+                  <option v-for="bank in AllBanks" :key="bank.id" :value="bank.id">
                     {{ bank.name }}
                   </option>
                 </select>
-                <div
-                  class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
-                >
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
                   <ChevronDown class="h-4 w-4" />
                 </div>
               </div>
@@ -324,21 +218,14 @@
 
             <!-- Bank Account Selection -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2"
-                >From Account
+              <label class="block text-sm font-medium text-gray-700 mb-2">From Account
               </label>
               <div class="relative">
-                <select
-                  v-model="form.selectedAccount"
+                <select v-model="form.selectedAccount"
                   class="w-full appearance-none rounded-lg border border-gray-300 px-4 py-3 pr-10 text-gray-900 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                  :disabled="!filteredAccounts.length"
-                >
+                  :disabled="!filteredAccounts.length">
                   <option value="" disabled>Select account</option>
-                  <option
-                    v-for="account in filteredAccounts"
-                    :key="account.id"
-                    :value="account.id"
-                  >
+                  <option v-for="account in filteredAccounts" :key="account.id" :value="account.id">
                     {{ account.account_number }}
                     -
                     {{ account.account_name }}
@@ -347,128 +234,77 @@
                     </template>
                   </option>
                 </select>
-                <div
-                  class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
-                >
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
                   <ChevronDown class="h-4 w-4" />
                 </div>
               </div>
-              <p
-                v-if="!filteredAccounts.length"
-                class="mt-1 text-sm text-gray-500"
-              >
+              <p v-if="!filteredAccounts.length" class="mt-1 text-sm text-gray-500">
                 No accounts available for selected bank
               </p>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2"
-                >To Bank
+              <label class="block text-sm font-medium text-gray-700 mb-2">To Bank
               </label>
               <div class="relative">
-                <select
-                  v-model="form.toBank"
-                  class="w-full appearance-none rounded-lg border border-gray-300 px-4 py-3 pr-10 text-gray-900 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                >
+                <select v-model="form.toBank"
+                  class="w-full appearance-none rounded-lg border border-gray-300 px-4 py-3 pr-10 text-gray-900 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
                   <option value="" disabled>Select bank</option>
-                  <option
-                    v-for="bank in AllBanks"
-                    :key="bank.id"
-                    :value="bank.id"
-                  >
+                  <option v-for="bank in AllBanks" :key="bank.id" :value="bank.id">
                     {{ bank.name }}
                   </option>
                 </select>
-                <div
-                  class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
-                >
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
                   <ChevronDown class="h-4 w-4" />
                 </div>
               </div>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2"
-                >To Account
+              <label class="block text-sm font-medium text-gray-700 mb-2">To Account
               </label>
-              <input
-                v-model="form.toAccount"
-                id="owner_name"
-                type="text"
+              <input v-model="form.toAccount" id="owner_name" type="text"
                 class="w-full rounded-xl border border-gray-300/80 px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/90 focus:border-blue-500/50 transition-all duration-200 bg-white/95 shadow-sm"
-                placeholder="Enter account number"
-              />
+                placeholder="Enter account number" />
             </div>
           </div>
         </div>
 
         <div class="space-y-6 max-w-3xl mx-auto">
           <div>
-            <label
-              for="amount"
-              class="block text-sm font-medium text-gray-800 mb-1"
-            >
+            <label for="amount" class="block text-sm font-medium text-gray-800 mb-1">
               Amount
             </label>
             <div class="relative">
-              <input
-                v-model="form.amount"
-                id="amount"
-                type="number"
-                step="0.01"
-                min="0"
+              <input v-model="form.amount" id="amount" type="number" step="0.01" min="0"
                 class="w-full rounded-xl border border-gray-300/80 px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/90 focus:border-blue-500/50 transition-all duration-200 bg-white/95 shadow-sm"
-                placeholder="Enter amount"
-              />
-              <div
-                class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
-              >
+                placeholder="Enter amount" />
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
                 <span class="text-sm">ETB</span>
               </div>
             </div>
           </div>
 
           <div>
-            <label
-              for="date"
-              class="block text-sm font-medium text-gray-800 mb-1"
-            >
+            <label for="date" class="block text-sm font-medium text-gray-800 mb-1">
               Date
             </label>
-            <input
-              v-model="form.paid_date"
-              id="date"
-              type="date"
-              class="w-full rounded-xl border border-gray-300/80 px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/90 focus:border-blue-500/50 transition-all duration-200 bg-white/95 shadow-sm"
-            />
+            <input v-model="form.paid_date" id="date" type="date"
+              class="w-full rounded-xl border border-gray-300/80 px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/90 focus:border-blue-500/50 transition-all duration-200 bg-white/95 shadow-sm" />
           </div>
 
           <div>
-            <label
-              for="remark"
-              class="block text-sm font-medium text-gray-800 mb-1"
-            >
+            <label for="remark" class="block text-sm font-medium text-gray-800 mb-1">
               Remark
             </label>
-            <textarea
-              v-model="form.remark"
-              id="remark"
-              rows="3"
+            <textarea v-model="form.remark" id="remark" rows="3"
               class="w-full rounded-xl border border-gray-300/80 px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/90 focus:border-blue-500/50 transition-all duration-200 bg-white/95 shadow-sm"
-              placeholder="Additional notes"
-            ></textarea>
+              placeholder="Additional notes"></textarea>
           </div>
 
           <div class="relative flex items-center">
-            <input
-              id="file_input"
-              type="file"
-              class="sr-only"
-              @change="form.file = $event.target.files[0]"
-            />
-            <label
-              for="file_input"
-              class="flex items-center justify-center w-full px-4 py-2 bg-white border border-input rounded-md shadow-sm cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors text-foreground"
-            >
+            <input id="file_input" type="file" class="sr-only" @change="form.file = $event.target.files[0]" />
+            <label for="file_input"
+              class="flex items-center justify-center w-full px-4 py-2 bg-white border border-input rounded-md shadow-sm cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors text-foreground">
               <Upload class="mr-2 h-4 w-4" />
               <span>
                 {{
@@ -486,12 +322,8 @@
         </div>
 
         <div class="flex gap-3 max-w-3xl mx-auto pt-4">
-          <Button
-            :disabled="loading"
-            type="submit"
-            class="w-full py-3.5 rounded-xl"
-          >
-            <span v-if="!loading">Save Expense</span>
+          <Button :disabled="loading" type="submit" class="w-full py-3.5 ">
+            <span v-if="!loading">Submit</span>
             <span v-else class="flex items-center gap-2">
               <Loader2 class="h-4 w-4 animate-spin" />
               Processing...
@@ -775,14 +607,7 @@ export default {
           enableHiding: false,
         },
 
-        {
-          accessorKey: "id",
-          header: "Id",
-          cell: ({ row }) => {
-            const expense = row.getValue("id"); // Access the nested vehicle object
-            return h("div", { class: "text-sm" }, expense);
-          },
-        },
+
         {
           accessorKey: "expense_type",
           header: "Type",

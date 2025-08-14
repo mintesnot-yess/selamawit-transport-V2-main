@@ -256,7 +256,7 @@
         </div>
         <!-- Submit Button -->
         <Button type="submit"
-          class="mt-2 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-md transition-colors duration-200">
+          class="mt-2 w-full  text-white font-semibold py-2 rounded-md transition-colors duration-200">
           <span v-if="loading" class="flex items-center justify-center">
             <LoaderCircle class="animate-spin mr-2 size-5" />
             Loading...
@@ -400,6 +400,31 @@ export default {
       //   this.loading = false;
       //   return;
       // }
+      if (!this.form.client_id) {
+        this.error = "Please select a client";
+        this.loading = false;
+        this.$refs.client_id.focus();
+        return;
+      }
+      if (!this.form.employee_id) {
+        this.error = "Please select a driver";
+        this.loading = false;
+        this.$refs.employee_id.focus();
+        return;
+      }
+      if (!this.form.vehicle_id) {
+        this.error = "Please select a vehicle";
+        this.loading = false;
+        this.$refs.vehicle_id.focus();
+        return;
+      }
+      if (!this.form.load_type_id) {
+        this.error = "Please select a load type";
+        this.loading = false;
+        this.$refs.load_type_id.focus();
+        return;
+
+      }
 
       try {
         const response = await useOrderStore.store(this.form);
@@ -451,15 +476,15 @@ export default {
         this.isUpdate = false;
         this.editId = null;
       } catch (error) {
-        this.error = error.message || "Failed to update expense";
+        this.error = error.message || "Failed to update order";
       } finally {
         this.loading = false;
       }
     },
 
-    confirmDelete(bank) {
-      this.deleteTitle = `Delete #OR${bank.id}`;
-      this.deleteId = bank.id;
+    confirmDelete(order) {
+      this.deleteTitle = `Delete #OR${order.id}`;
+      this.deleteId = order.id;
       this.showDeleteDialog = true;
     },
     async handleDelete() {
@@ -469,7 +494,7 @@ export default {
 
         await this.fetchOrders(); // Refresh the list
       } catch (error) {
-        this.error = error.message || "Failed to delete bank";
+        this.error = error.message || "Failed to delete order";
       } finally {
         this.loading = false;
         this.showDeleteDialog = false;
@@ -797,10 +822,7 @@ export default {
 *::-webkit-scrollbar {
   display: none;
 }
-</style>
 
-
-<style scoped>
 /* Form input styling */
 form :deep(input) {
   transition: all 0.2s ease;

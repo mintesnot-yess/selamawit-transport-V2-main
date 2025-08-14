@@ -9,6 +9,7 @@ const apiEndPoints = {
   users: "/users",
   user: "/user",
   register: "/register",
+  showUser: (id: any) => `/users/${id}`,
   updateUser: (id: any) => `/users/${id}`,
   deleteUser: (id: any) => `/users/${id}`,
   bulkDeleteUsers: "/users/bulk",
@@ -115,6 +116,15 @@ const apiEndPoints = {
   searchPermission: "/permissions/search",
   updatePermission: (role: any) => `/permissions/${role}`,
   deletePermission: (role: any) => `/permissions/${role}`,
+
+  // Reports
+  reports: "/reports",
+  getOwnReport: "/reports/own-summary",
+  getIncomeReport: "/reports/income",
+  getExpenseReport: "/reports/expense",
+  getOrderReport: "/reports/order",
+  getVehicleReport: "/reports/vehicle",
+  getEmployeeReport: "/reports/employee",
 };
 
 export default apiEndPoints;

@@ -1,6 +1,6 @@
 <template>
   <GoBack />
-  <div class="flex flex-col gap-6 p-6 rounded-xl border shadow-sm bg-card">
+  <div class="flex mt-2 flex-col gap-6 p-6 rounded-xl border shadow-sm bg-card">
     <div class="flex items-start justify-between">
       <div class="flex gap-2 flex-col">
         <h4 class="text-lg font-semibold leading-none tracking-tight">
@@ -9,11 +9,8 @@
         <p class="text-sm text-muted-foreground"></p>
       </div>
       <div class="flex items-center gap-2">
-        <Button
-          @click="showPanel = true"
-          variant="ghost"
-          class="text-sm text-muted-foreground flex gap-1 items-center justify-center cursor-pointer"
-        >
+        <Button @click="showPanel = true" variant="ghost"
+          class="text-sm text-muted-foreground flex gap-1 items-center justify-center cursor-pointer">
           <CirclePlus />
           Create New
         </Button>
@@ -21,35 +18,19 @@
     </div>
 
     <div class="rounded-lg overflow-hidden">
-      <Table
-        :columns="columns"
-        :data="Accounts"
-        :isPagination="true"
-        :isSearchable="true"
-        :is-filter-select="false"
-        filter-select-column="status"
-        filter-select-label="Status"
-        :filter-select-options="[
+      <Table :columns="columns" :data="Accounts" :isPagination="true" :isSearchable="true" :is-filter-select="false"
+        filter-select-column="status" filter-select-label="Status" :filter-select-options="[
           { label: 'All', value: '__all' },
           { label: 'PENDING', value: 'PENDING' },
           { label: 'IN_PROGRESS', value: 'IN_PROGRESS' },
           { label: 'COMPLETED', value: 'COMPLETED' },
           { label: 'CANCELLED', value: 'CANCELLED' },
-        ]"
-      />
+        ]" />
     </div>
-    <ConfirmDelete
-      v-model:open="showDeleteDialog"
-      :title="deleteTitle"
+    <ConfirmDelete v-model:open="showDeleteDialog" :title="deleteTitle"
       description="Are you sure you want to delete this bank account number ? This action cannot be undone."
-      confirm-label="Delete"
-      @confirm="handleDelete"
-    />
-    <Panel
-      v-model="showPanel"
-      title="Create A Account Number"
-      description="Fill the Account Information"
-    >
+      confirm-label="Delete" @confirm="handleDelete" />
+    <Panel v-model="showPanel" title="Create A Account Number" description="Fill the Account Information">
       <form @submit.prevent="handleSubmit" class="flex flex-col h-full">
         <div class="flex-1 space-y-2">
           <FormField name="name">
@@ -68,9 +49,7 @@
         </div>
         <Button type="submit">
           <span v-if="loading">
-            <LoaderCircle
-              class="fa-solid size-6 fa-circle-notch animate-spin"
-            />
+            <LoaderCircle class="fa-solid size-6 fa-circle-notch animate-spin" />
           </span>
           <span v-else> {{ isUpdate ? "Edit" : "Submit" }} </span>
         </Button>
@@ -79,7 +58,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import { ArrowUpDown, CirclePlus, LoaderCircle } from "lucide-vue-next";
 import { Panel } from "@/components/panels";
 import {
@@ -279,13 +258,13 @@ export default {
         from:
           meta.from ||
           ((meta.current_page || 1) - 1) *
-            (meta.per_page || this.pagination.per_page) +
-            1,
+          (meta.per_page || this.pagination.per_page) +
+          1,
         to:
           meta.to ||
           Math.min(
             (meta.current_page || 1) *
-              (meta.per_page || this.pagination.per_page),
+            (meta.per_page || this.pagination.per_page),
             meta.total || 0
           ),
       };
@@ -369,9 +348,3 @@ export default {
   },
 };
 </script>
-
-
-
-
-
-

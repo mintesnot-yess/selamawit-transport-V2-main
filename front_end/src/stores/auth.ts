@@ -2,15 +2,15 @@ import api from "@/api.ts";
 import apiEndPoints from "@/components/constants";
 import { useProfileStore } from "./profile";
 import { AUTH_TOKEN_KEY } from "@/key";
- 
+
 export default {
-  
+
   async login(credentials: any) {
     try {
       const response = await api.post(`${import.meta.env.VITE_API_URL}${apiEndPoints.login}`, credentials);
 
       return response.data;
-    } catch (error:any) {
+    } catch (error: any) {
       throw new Error(error.response?.data?.message || "Login failed");
     }
   },
@@ -29,15 +29,15 @@ export default {
 
     try {
 
-       const response = await api.get(apiEndPoints.user);
-      
+      const response = await api.get(apiEndPoints.user);
+
       // localStorage.setItem('user', JSON.stringify(response.data))
       const profile = useProfileStore();
-        
+
       profile.$patch({
         user: response.data.user,
         permissions: response.data.permissions,
-        token:token
+        token: token
       });
 
       return response.data;
@@ -45,10 +45,11 @@ export default {
     } catch (error) {
       console.error("Fetch user error:", error);
       // Optionally dispatch logout
-       this.logout();
+      this.logout();
       throw error;
     }
   },
+
   async logout() {
     try {
       await api.post(apiEndPoints.logout);

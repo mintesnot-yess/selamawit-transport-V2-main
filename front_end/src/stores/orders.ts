@@ -1,9 +1,9 @@
- import apiEndPoints from '@/components/constants';
- import axios from 'axios';
+import apiEndPoints from '@/components/constants';
+import axios from 'axios';
 
-const  useOrderStore = {
+const useOrderStore = {
     // Get all users
-    async getAll(params:any = {}) {
+    async getAll(params: any = {}) {
         try {
 
             const response = await axios.get(`${import.meta.env.VITE_API_URL}${apiEndPoints.orders}`, {
@@ -52,14 +52,14 @@ const  useOrderStore = {
     },
     // async getById(id)
 
-    // Create a new vehicle
-    async store(vehicleData:[]) {
+    // Create a new order
+    async store(orderData: []) {
         try {
             const formData = new FormData();
-            for (const key in vehicleData) {
-                formData.append(key, vehicleData[key]);
+            for (const key in orderData) {
+                formData.append(key, orderData[key]);
             }
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}${apiEndPoints.orders}`, vehicleData, {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}${apiEndPoints.orders}`, orderData, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
                     'Content-Type': 'multipart/form-data'
@@ -70,8 +70,8 @@ const  useOrderStore = {
             throw this.handleError(error);
         }
     },
-    // Get a vehicle by ID
-    async getById(id:any) {
+    // Get a order by ID
+    async getById(id: any) {
         try {
             const response = await axios.get(`${import.meta.env.VITE_API_URL}${apiEndPoints.showOrder(id)}`, {
                 headers: {
@@ -84,12 +84,12 @@ const  useOrderStore = {
         }
     },
 
-    // Update a vehicle by ID
-    async update(id:any, vehicleData:[]) {
+    // Update a order by ID
+    async update(id: any, orderData: []) {
         try {
             const formData = new FormData();
-            for (const key in vehicleData) {
-                formData.append(key, vehicleData[key]);
+            for (const key in orderData) {
+                formData.append(key, orderData[key]);
             }
             const response = await axios.post(`${import.meta.env.VITE_API_URL}${apiEndPoints.updateOrder(id)}?_method=PUT`, formData, {
                 headers: {
@@ -103,8 +103,8 @@ const  useOrderStore = {
         }
     },
 
-    // Delete a vehicle by ID
-    async delete(id:any) {
+    // Delete a order by ID
+    async delete(id: any) {
         try {
             const response = await axios.delete(`${import.meta.env.VITE_API_URL}${apiEndPoints.deleteOrder(id)}`, {
                 headers: {
@@ -117,7 +117,7 @@ const  useOrderStore = {
         }
     },
 
-    handleError(error:any) {
+    handleError(error: any) {
         if (error.response && error.response.data && error.response.data.message) {
             return new Error(error.response.data.message);
         }
@@ -126,4 +126,4 @@ const  useOrderStore = {
 
 };
 
-export default  useOrderStore;
+export default useOrderStore;

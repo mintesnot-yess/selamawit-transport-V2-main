@@ -7,11 +7,16 @@
           " />
       </div>
       <div v-if="isFilterSelect" class="flex items-center py-1 px-1">
-        <label class="mr-2 text-sm font-medium">{{ filterSelectLabel }}</label>
+        <!-- <label class="mr-2 text-sm font-medium">+{{ filterSelectLabel }}</label> -->
         <Select v-model="selectedFilterValue" class="max-w-xs">
           <SelectTrigger class="w-fit">
             <SelectValue placeholder="Select..." />
           </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="__all">
+              {{ filterSelectLabel }}
+            </SelectItem>
+          </SelectContent>
           <SelectContent>
             <SelectItem v-for="option in filterSelectOptions" :key="option.value" :value="option.value">
               {{ option.label }}

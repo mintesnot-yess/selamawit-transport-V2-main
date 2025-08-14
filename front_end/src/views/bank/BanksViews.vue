@@ -6,11 +6,8 @@
         <p class="text-sm text-muted-foreground"></p>
       </div>
       <div class="flex items-center gap-2">
-        <Button
-          @click="togglePanel()"
-          variant="ghost"
-          class="text-sm text-muted-foreground flex gap-1 items-center justify-center cursor-pointer"
-        >
+        <Button @click="togglePanel()" variant="ghost"
+          class="text-sm text-muted-foreground flex gap-1 items-center justify-center cursor-pointer">
           <CirclePlus />
           Create New
         </Button>
@@ -18,37 +15,20 @@
     </div>
 
     <div class="rounded-lg overflow-hidden">
-      <Table
-        :columns="columns"
-        :data="Banks"
-        :isPagination="true"
-        :isSearchable="true"
-        :is-filter-select="false"
-        filter-select-column="status"
-        filter-select-label="Status"
-        :filter-select-options="[
+      <Table :columns="columns" :data="Banks" :isPagination="true" :isSearchable="true" :is-filter-select="false"
+        filter-select-column="status" filter-select-label="Status" :filter-select-options="[
           { label: 'All', value: '__all' },
           { label: 'PENDING', value: 'PENDING' },
           { label: 'IN_PROGRESS', value: 'IN_PROGRESS' },
           { label: 'COMPLETED', value: 'COMPLETED' },
           { label: 'CANCELLED', value: 'CANCELLED' },
-        ]"
-      />
+        ]" />
     </div>
-    <ConfirmDelete
-      v-model:open="showDeleteDialog"
-      :title="deleteTitle"
-      description="Are you sure you want to delete this bank? This action cannot be undone."
-      confirm-label="Delete Bank"
-      @confirm="handleDelete"
-    />
-    <Panel
-      v-model="showPanel"
-      :title="isUpdate ? 'Update Bank Information' : 'Create  Bank'"
-      :description="
-        isUpdate ? '' : 'Fill in the information to create a new bank'
-      "
-    >
+    <ConfirmDelete v-model:open="showDeleteDialog" :title="deleteTitle"
+      description="Are you sure you want to delete this bank? This action cannot be undone." confirm-label="Delete Bank"
+      @confirm="handleDelete" />
+    <Panel v-model="showPanel" :title="isUpdate ? 'Update Bank Information' : 'Create  Bank'" :description="isUpdate ? '' : 'Fill in the information to create a new bank'
+      ">
       <form @submit.prevent="handleSubmit" class="flex flex-col h-full">
         <div class="flex-1 space-y-2">
           <FormField name="name">
@@ -59,16 +39,14 @@
               </FormControl>
               <span class="text-sm pt-2 text-red-600" v-if="error">{{
                 error
-              }}</span>
+                }}</span>
               <FormMessage />
             </FormItem>
           </FormField>
         </div>
         <Button type="submit">
           <span v-if="loading">
-            <LoaderCircle
-              class="fa-solid size-6 fa-circle-notch animate-spin"
-            />
+            <LoaderCircle class="fa-solid size-6 fa-circle-notch animate-spin" />
           </span>
           <span v-else> {{ isUpdate ? "Edit" : "Submit" }} </span>
         </Button>
@@ -77,7 +55,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import { ArrowUpDown, CirclePlus, LoaderCircle } from "lucide-vue-next";
 import { Panel } from "@/components/panels";
 import {
@@ -96,6 +74,7 @@ import { h, ref, shallowRef } from "vue";
 import useBankStore from "@/stores/banks";
 import router from "@/router";
 import ConfirmDelete from "@/components/form/ConfirmDelete.vue";
+import { RouterLink } from "vue-router";
 
 export default {
   components: {
@@ -255,20 +234,23 @@ export default {
           enableHiding: false,
         },
 
-        {
-          id: "id", // Don't use accessorKey for computed fields
-          header: "#",
-          cell: ({ row }) => {
-            const index = row.index + 1; // +1 to start from 1 instead of 0
-            return h("div", { class: "text-sm" }, index.toString());
-          },
-        },
+
         {
           accessorKey: "name",
           header: "Bank name",
           cell: ({ row }) => {
-            const Bank_name = row.getValue("name"); // Access the nested vehicle object
-            return h("div", { class: "text-sm" }, Bank_name);
+
+            const bank = row.original;
+            return h(
+              RouterLink, // Use RouterLink component
+              {
+                class:
+                  "hover:text-blue-800 hover:underline",
+                to: `/banks/accounts/${bank.id}`,
+              },
+              ` ${bank.name} `);
+
+
           },
         },
 
@@ -320,9 +302,3 @@ export default {
   },
 };
 </script>
-
-
-
-
-
-

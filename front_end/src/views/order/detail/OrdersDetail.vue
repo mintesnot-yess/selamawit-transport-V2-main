@@ -12,13 +12,9 @@
       </div>
     </div>
 
-    <main
-      class="grid items-start flex-1 gap-4 md:gap-8 lg:grid-cols-3 xl:grid-cols-3"
-    >
+    <main class="grid items-start flex-1 gap-4 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
       <OrderCard :order="orders" @delete="handleDeleteOrder" />
-      <div
-        class="grid items-start gap-1 auto-rows-max md:gap-4 lg:col-span-2 overflow-x-auto"
-      >
+      <div class="grid items-start gap-1 auto-rows-max md:gap-4 lg:col-span-2 overflow-x-auto">
         <Tabs default-value="expense">
           <div class="flex items-center">
             <TabsList>
@@ -33,10 +29,7 @@
             <Expense :expenseData="expenses" @data-changed="fetchOrder" />
           </TabsContent>
           <TabsContent value="payment_collected">
-            <PaymentCollected
-              :expenseData="incomes"
-              @data-changed="fetchOrder"
-            />
+            <PaymentCollected :expenseData="incomes" @data-changed="fetchOrder" />
           </TabsContent>
         </Tabs>
       </div>
@@ -44,7 +37,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import { ArrowUpDown, CirclePlus, LoaderCircle } from "lucide-vue-next";
 import { Panel } from "@/components/panels";
 import {
@@ -261,13 +254,13 @@ export default {
         from:
           meta.from ||
           ((meta.current_page || 1) - 1) *
-            (meta.per_page || this.pagination.per_page) +
-            1,
+          (meta.per_page || this.pagination.per_page) +
+          1,
         to:
           meta.to ||
           Math.min(
             (meta.current_page || 1) *
-              (meta.per_page || this.pagination.per_page),
+            (meta.per_page || this.pagination.per_page),
             meta.total || 0
           ),
       };
@@ -368,4 +361,3 @@ export default {
   max-width: 800px;
 }
 </style>
-

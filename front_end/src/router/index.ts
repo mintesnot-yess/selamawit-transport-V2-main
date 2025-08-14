@@ -15,6 +15,7 @@ import LocationViews from "@/views/location/LocationViews.vue";
 import LogsViews from "@/views/logs/LogsViews.vue";
 import { OrderView } from "@/views/order";
 import { OrderDetail } from "@/views/order/detail";
+import OwnSummary from "@/views/report/OwnSummary.vue";
 import { RolesViews } from "@/views/rolePermission";
 import { UsersViews } from "@/views/user";
 import VehicleDetailView from "@/views/vehicle/detail/vehicleDetailView.vue";
@@ -169,6 +170,16 @@ const routes: RouteRecordRaw[] = [
         component: LogsViews,
         meta: {
           title: "Logs",
+          requiresAuth: true
+        },
+      },
+
+      {
+        path: "/report/own-summary",
+        name: "OwnSummary",
+        component: OwnSummary,
+        meta: {
+          title: "Own Summary",
           requiresAuth: true
         },
       },

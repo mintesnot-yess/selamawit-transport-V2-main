@@ -55,7 +55,7 @@ const data = {
             url: "#",
             icon: ClipboardList,
             items: [
-                { title: "Own Summary", url: "#", permission: "read-report" },
+                { title: "Own Summary", url: "/report/own-summary", permission: "read-report" },
                 {
                     title: "Uncollected Payments",
                     url: "#",

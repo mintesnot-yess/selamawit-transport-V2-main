@@ -83,7 +83,8 @@ class OrderController extends Controller
             "sub_tariff" => "required|numeric|min:0",
             "arrival_at_loading_site" => "required|date",
             "loading_date" =>
-                "required|date|after_or_equal:arrival_at_loading_site",
+            "required|date|after_or_equal:arrival_at_loading_site",
+
         ]);
 
         $order = Order::create(
@@ -201,7 +202,8 @@ class OrderController extends Controller
             "sub_tariff" => "required|numeric|min:0",
             "arrival_at_loading_site" => "required|date",
             "loading_date" =>
-                "required|date|after_or_equal:arrival_at_loading_site",
+            "required|date|after_or_equal:arrival_at_loading_site",
+            "current_condition" => "required|in:LOADED,OFFLOADED",
         ]);
 
         $order->update([
@@ -246,7 +248,7 @@ class OrderController extends Controller
             return response()->json(
                 [
                     "message" =>
-                        "Cannot delete order as it has associated incomes",
+                    "Cannot delete order as it has associated incomes",
                 ],
                 400
             );

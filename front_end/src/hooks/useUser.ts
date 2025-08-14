@@ -1,7 +1,7 @@
 // stores/userStore.ts
 import auth from '@/stores/auth'
 import { defineStore } from 'pinia'
- import { ref } from 'vue'
+import { ref } from 'vue'
 import { string } from 'zod'
 
 export const useUserStore = defineStore('user', () => {
@@ -22,7 +22,7 @@ export const useUserStore = defineStore('user', () => {
             roles.value = userData.roles || []
         } catch (err) {
             error.value = err,
-            console.error('Failed to fetch user:', err)
+                console.error('Failed to fetch user:', err)
         } finally {
             loading.value = false
         }

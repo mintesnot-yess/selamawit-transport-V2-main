@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 // use Illuminate\Support\Facades\Validator as IlluminateValidator;
 use Illuminate\Support\Facades\Validator;
+
+require_once app_path('Helpers/Logger.php');
+
+
 require_once app_path("Helpers/Logger.php");
 
 class AuthController extends Controller
@@ -98,7 +102,7 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken("auth_token")->plainTextToken;
-        // log_action('Login ' . class_basename($user) . ' ' . $user->name . ' | ' . $user->email, $user->id);
+        log_action('Login ' . class_basename($user) . ' ' . $user->name . ' | ' . $user->email, $user->id);
 
         return response()->json([
             "access_token" => $token,
@@ -136,7 +140,7 @@ class AuthController extends Controller
 
         log_action(
             "Update " . class_basename($user) . " " .
-            $user->name . " | " . $user->email . " " . $user->id
+                $user->name . " | " . $user->email . " " . $user->id
         );
 
         return response()->json([

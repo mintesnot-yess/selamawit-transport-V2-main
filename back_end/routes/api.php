@@ -14,26 +14,26 @@ use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\IncomeController;
 use App\Http\Controllers\API\LogController;
 use App\Http\Controllers\API\DashboardController;
+use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ReportsController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
 Route::post("/login", [AuthController::class, "login"]);
-Route::post("/register", [AuthController::class, "register"]);
 
 Route::middleware("auth:sanctum")->group(function () {
     Route::get("dashboard", [DashboardController::class, "index"]);
+    Route::post("/register", [AuthController::class, "register"]);
 
     Route::get("/users", [AuthController::class, "index"]);
     Route::delete("/users/bulk", [AuthController::class, "bulkDelete"]);
-
     Route::delete("/user", [AuthController::class, "destroy"]);
     Route::put("/users/{id}", [AuthController::class, "update"]);
-    // delete
     Route::delete("/users/{id}", [AuthController::class, "destroy"]);
+    Route::get("/users/{id}", [AuthController::class, "show"]);
 
     Route::get("/user", function (Request $request) {
         $user = $request->user();
@@ -49,142 +49,55 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::post("/logout", [AuthController::class, "logout"]);
 
     // Bank routes
-
     Route::resource("banks", BankController::class);
     Route::resource("bank-accounts", BankAccountController::class);
 
-    // Route::resource("vehicles", VehicleController::class);
-
     // Vehicle routes
-    Route::prefix("vehicles")->group(function () {
-        Route::get("/", [VehicleController::class, "index"]);
-        Route::get("/{id}", [VehicleController::class, "show"]);
-        Route::post("/", [VehicleController::class, "store"]);
-        Route::get("/search", [VehicleController::class, "search"]);
-        Route::delete("/{id}", [VehicleController::class, "destroy"]);
-        Route::put("/{id}", [VehicleController::class, "update"]);
-        // Add other vehicle routes as needed
-    });
+    Route::resource("vehicles", VehicleController::class);
 
-    // Customer routes
-    Route::prefix("clients")->group(function () {
-        Route::get("/", [ClientsController::class, "index"]);
-        Route::post("/", [ClientsController::class, "store"]);
-        Route::get("/search", [ClientsController::class, "search"]);
-        Route::delete("/{id}", [ClientsController::class, "destroy"]);
-        Route::put("/{id}", [ClientsController::class, "update"]);
-        // Add other client routes as needed
-    });
+    // Client routes
+    Route::resource("clients", ClientsController::class);
 
     // Employee routes
-    Route::prefix("employees")->group(function () {
-        Route::get("/", [EmployeeController::class, "index"]);
-        Route::post("/", [EmployeeController::class, "store"]);
-        Route::delete("/{id}", [EmployeeController::class, "destroy"]);
-        Route::put("/{id}", [EmployeeController::class, "update"]);
-        // Add other employee routes as needed
-    });
+    Route::resource("employees", EmployeeController::class);
 
     // Expense Type routes
-    Route::prefix("expense-types")->group(function () {
-        Route::get("/", [ExpenseTypeController::class, "index"]);
-        Route::post("/", [ExpenseTypeController::class, "store"]);
-        Route::get("/search", [ExpenseTypeController::class, "search"]);
-        Route::delete("/{id}", [ExpenseTypeController::class, "destroy"]);
-        Route::put("/{id}", [ExpenseTypeController::class, "update"]);
-        // Add other expense type routes as needed
-    });
+    Route::resource("expense-types", ExpenseTypeController::class);
 
     // Expense routes
-    Route::prefix("expenses")->group(function () {
-        Route::get("/", [ExpenseController::class, "index"]);
-        Route::post("/", [ExpenseController::class, "store"]);
-        Route::get("/search", [ExpenseController::class, "search"]);
-        Route::delete("/{id}", [ExpenseController::class, "destroy"]);
-        Route::put("/{id}", [ExpenseController::class, "update"]);
-        // Add other expense routes as needed
-    });
+    Route::resource("expenses", ExpenseController::class);
 
-    // Load Type crud routes
-    Route::prefix("load-types")->group(function () {
-        Route::get("/", [LoadTypeController::class, "index"]);
-        Route::post("/", [LoadTypeController::class, "store"]);
-        Route::get("/search", [LoadTypeController::class, "search"]);
-        Route::get("/{id}", [LoadTypeController::class, "show"]);
-        Route::put("/{id}", [LoadTypeController::class, "update"]);
-        Route::delete("/{id}", [LoadTypeController::class, "destroy"]);
-    });
+    // Load Type routes
+    Route::resource("load-types", LoadTypeController::class);
 
-    // Location crud routes
-    Route::prefix("locations")->group(function () {
-        Route::get("/", [LocationController::class, "index"]);
-        Route::post("/", [LocationController::class, "store"]);
-        Route::get("/search", [LocationController::class, "search"]);
-        Route::get("/{id}", [LocationController::class, "show"]);
-        Route::put("/{id}", [LocationController::class, "update"]);
-        Route::delete("/{id}", [LocationController::class, "destroy"]);
-    });
+    // Location routes
+    Route::resource("locations", LocationController::class);
 
     // Order routes
-    Route::prefix("orders")->group(function () {
-        Route::get("/", [OrderController::class, "index"]);
-        Route::post("/", [OrderController::class, "store"]);
-        Route::get("/search", [OrderController::class, "search"]);
-        Route::get("/{id}", [OrderController::class, "show"]);
-        Route::put("/{id}", [OrderController::class, "update"]);
-        Route::delete("/{id}", [OrderController::class, "destroy"]);
-    }); // Income routes
-
-    Route::prefix("incomes")->group(function () {
-        Route::get("/", [IncomeController::class, "index"]);
-        Route::post("/", [IncomeController::class, "store"]);
-        Route::get("/search", [IncomeController::class, "search"]);
-        Route::get("/{id}", [IncomeController::class, "show"]);
-        Route::put("/{id}", [IncomeController::class, "update"]);
-        Route::delete("/{id}", [IncomeController::class, "destroy"]);
-    });
+    Route::resource("orders", OrderController::class);
 
     // Income routes
-    Route::prefix("incomes")->group(function () {
-        Route::apiResource("/", IncomeController::class);
-    });
+    Route::resource("incomes", IncomeController::class);
 
     // Log routes
-    Route::prefix("logs")->group(function () {
-        Route::get("/", [LogController::class, "index"]);
-        Route::get("/{log}", [LogController::class, "show"]);
-    });
+    Route::resource("logs", LogController::class)->only(['index', 'show']);
 
-    // Ensure only authorized users (e.g., admins) can create roles
-    Route::prefix("roles")->group(function () {
-        Route::get("/", [RoleController::class, "index"]);
-        Route::post("/", [RoleController::class, "store"]);
-        Route::get("/search", [RoleController::class, "search"]);
-        Route::get("/{role}", [RoleController::class, "show"]);
-        Route::put("/{role}", [RoleController::class, "update"]);
+    // Role routes
+    Route::resource("roles", RoleController::class);
+    Route::post("roles/{role}/permissions", [RoleController::class, "updatePermissions"]);
+    Route::get("roles/{role}/permissions", [RoleController::class, "getPermissions"]);
+    Route::match(["get", "post"], "roles/{role}/permissions", [RoleController::class, "handlePermissions"]);
 
-        Route::delete("/{role}", [RoleController::class, "destroy"]);
+    // Permission routes
+    Route::resource("permissions", PermissionController::class);
 
-        Route::post("/{role}/permissions", [
-            RoleController::class,
-            "updatePermissions",
-        ]); // Existing POST endpoint
-        Route::get("/{role}/permissions", [
-            RoleController::class,
-            "getPermissions",
-        ]); // New GET endpoint
-        Route::match(["get", "post"], "/{role}/permissions", [
-            RoleController::class,
-            "handlePermissions",
-        ]);
-    });
-
-    Route::prefix("permissions")->group(function () {
-        Route::get("/", [PermissionController::class, "index"]);
-        Route::post("/", [PermissionController::class, "store"]);
-        Route::get("/{role}", [PermissionController::class, "show"]);
-        Route::get("/search", [PermissionController::class, "search"]);
-        Route::put("/{role}", [PermissionController::class, "update"]);
-        Route::delete("/{role}", [PermissionController::class, "destroy"]);
+    // Report routes
+    Route::prefix("reports")->group(function () {
+        Route::get("/own-summary", [ReportsController::class, "getOwnReport"]);
+        Route::get("/income", [ReportsController::class, "getIncomeReport"]);
+        Route::get("/expense", [ReportsController::class, "getExpenseReport"]);
+        Route::get("/order", [ReportsController::class, "getOrderReport"]);
+        Route::get("/vehicle", [ReportsController::class, "getVehicleReport"]);
+        Route::get("/employee", [ReportsController::class, "getEmployeeReport"]);
     });
 });
