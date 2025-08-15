@@ -8,11 +8,9 @@
         <p class="text-sm text-muted-foreground"></p>
       </div>
       <div class="flex items-center gap-2">
-        <Button
-          @click="togglePanel()"
-          variant="ghost"
-          class="text-sm text-muted-foreground flex gap-1 items-center justify-center cursor-pointer"
-        >
+        <Button @click="togglePanel()" variant="ghost"
+          class="text-sm text-muted-foreground flex gap-1 items-center justify-center cursor-pointer">
+          <!-- m -->
           <CirclePlus />
           Create New
         </Button>
@@ -20,27 +18,14 @@
     </div>
 
     <div class="rounded-lg overflow-hidden">
-      <Table
-        :columns="columns"
-        :data="locations"
-        :isPagination="true"
-        :isSearchable="true"
-        :is-filter-select="false"
-      />
+      <Table :columns="columns" :data="locations" :isPagination="true" :isSearchable="true" :is-filter-select="false" />
     </div>
-    <ConfirmDelete
-      v-model:open="showDeleteDialog"
-      :title="deleteTitle"
+    <ConfirmDelete v-model:open="showDeleteDialog" :title="deleteTitle"
       description="Are you sure you want to delete this Location? This action cannot be undone."
-      confirm-label="Delete Location"
-      @confirm="handleDelete"
-    />
+      confirm-label="Delete Location" @confirm="handleDelete" />
 
-    <Panel
-      v-model="showPanel"
-      :title="isUpdate ? 'Update Location Information' : 'Create A Location'"
-      description="Fill the Location Information"
-    >
+    <Panel v-model="showPanel" :title="isUpdate ? 'Update Location Information' : 'Create A Location'"
+      description="Fill the Location Information">
       <form @submit.prevent="handleSubmit" class="flex flex-col h-full">
         <div class="flex-1 space-y-2">
           <FormField name="name">
@@ -57,10 +42,8 @@
         <div v-if="error" class="text-red-500 text-sm text-center mt-2">
           {{ error }}
         </div>
-        <Button
-          type="submit"
-          class="mt-2 w-full text-white font-semibold py-2 rounded-md transition-colors duration-200"
-        >
+        <Button type="submit"
+          class="mt-2 w-full text-white font-semibold py-2 rounded-md transition-colors duration-200">
           <span v-if="loading" class="flex items-center justify-center">
             <LoaderCircle class="animate-spin mr-2 size-5" />
             Loading...
@@ -72,7 +55,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import { ArrowUpDown, CirclePlus, LoaderCircle } from "lucide-vue-next";
 import { Panel } from "@/components/panels";
 import {
@@ -316,9 +299,3 @@ export default {
   },
 };
 </script>
-
-
-
-
-
-

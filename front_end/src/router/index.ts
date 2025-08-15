@@ -12,7 +12,7 @@ import { ExpensesViews } from "@/views/expense";
 import { ExpensesTypeViews } from "@/views/expenseType";
 import LoadTypeViews from "@/views/loadType/LoadTypeViews.vue";
 import LocationViews from "@/views/location/LocationViews.vue";
-import LogsViews from "@/views/logs/LogsViews.vue";
+import LogsViews from "@/views/log/LogsViews.vue";
 import { OrderView } from "@/views/order";
 import { OrderDetail } from "@/views/order/detail";
 import OwnSummary from "@/views/report/OwnSummary.vue";
